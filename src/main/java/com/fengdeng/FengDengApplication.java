@@ -8,6 +8,6 @@ public class FengDengApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(FengDengApplication.class, args);
-        System.out.println("🚀 丰登系统启动成功！Spring Boot + Web3j + ZXing 环境已就绪。");
+        System.out.println("丰登系统启动成功！Spring Boot + Web3j + ZXing 环境已就绪。");
     }
 }
