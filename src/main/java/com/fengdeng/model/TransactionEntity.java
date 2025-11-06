@@ -35,7 +35,7 @@ public class TransactionEntity {
     // 上链时间
     private LocalDateTime timestamp;
 
-    // ✅ 新增：防伪码字段（18位随机码）
+    // 防伪码字段（18位随机码）
     @Column(length = 32)
     private String antiFakeCode;
 
