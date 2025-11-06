@@ -19,7 +19,7 @@ public class AuthFilter implements Filter {
 
         boolean loggedIn = (session != null && session.getAttribute("user") != null);
         boolean isPublic = path.startsWith("/index")
-                || path.startsWith("/register")          // ★ 加上这一行
+                || path.startsWith("/register")          
                 || path.startsWith("/verify")
                 || path.startsWith("/api/qrcode/trace")
                 || path.startsWith("/css")
