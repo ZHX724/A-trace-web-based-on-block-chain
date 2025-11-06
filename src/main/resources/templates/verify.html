@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>丰登防伪验证中心</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: linear-gradient(180deg, #f7fff7, #e8f9ea);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 40px 60px;
+            border-radius: 16px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        h1 {
+            color: #2e8b57;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #34a853;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #2e8b57;
+        }
+
+        .error {
+            color: #e74c3c;
+            margin-top: 15px;
+        }
+
+        footer {
+            margin-top: 25px;
+            color: #777;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>🔍 丰登防伪验证系统</h1>
+    <p>请输入18位产品防伪码进行查询</p>
+
+    <form method="post" action="/verify">
+        <input type="text" name="code" placeholder="请输入防伪码" maxlength="18" required>
+        <button type="submit">验证真伪</button>
+    </form>
+
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <footer>© 2025 丰登助农区块链系统 | 防伪验证中心</footer>
+</div>
+</body>
+</html>

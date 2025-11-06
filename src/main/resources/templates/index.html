@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>丰登助农区块链溯源系统</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(180deg, #e8fbe8, #ffffff);
+            font-family: "Microsoft YaHei", sans-serif;
+            color: #2e8b57;
+        }
+        .hero {
+            text-align: center;
+            padding: 100px 20px 40px;
+        }
+        .hero h1 {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 18px;
+            color: #555;
+            max-width: 720px;
+            margin: 0 auto 30px;
+        }
+        .btn-main {
+            background-color: #34a853;
+            color: white;
+            font-size: 18px;
+            padding: 12px 32px;
+            border-radius: 8px;
+            margin: 10px;
+            border: none;
+            transition: 0.3s;
+            text-decoration: none;            /* ✅ 去掉下划线 */
+            display: inline-block;            /* 确保 padding 生效 */
+        }
+        .btn-main:hover {
+            background-color: #2e8b57;
+            transform: translateY(-2px);
+            text-decoration: none;            /* ✅ 悬停时保持无下划线 */
+        }
+        .stat-card {
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            background: #fff;
+            padding: 24px;
+            height: 100%;
+        }
+        .stat-title {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2e8b57;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="hero">
+    <img src="/images/maitian.jpg" alt="logo" width="100" style="margin-bottom:20px;">
+    <h1>🌾 丰登助农区块链溯源系统</h1>
+    <p>
+        打通农产品从田间到餐桌的每一步，基于区块链技术实现数据上链、防伪追溯、公开可信，
+        让消费者安心、让农户增信。
+    </p>
+    <div>
+        <a href="/login" class="btn-main">👨‍🌾 登录系统</a>
+        <a href="/verify" class="btn-main">🔍 防伪验证</a>
+    </div>
+</div>
+
+<!-- 统计仪表盘 -->
+<div class="container pb-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-title">已认证农户数</div>
+                <div class="stat-value" th:text="${farmerCount}">0</div>
+                <div class="text-muted">角色为 FARMER 的用户数量</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-title">系统总上链次数</div>
+                <div class="stat-value" th:text="${totalTx}">0</div>
+                <div class="text-muted">数据库中交易记录总数</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-title">当前时间</div>
+                <div class="stat-value" th:text="${#temporals.format(now, 'yyyy-MM-dd HH:mm:ss')}">--</div>
+                <div class="text-muted">服务器当前时间</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2025 丰登助农区块链系统</p>
+</footer>
+
+</body>
+</html>

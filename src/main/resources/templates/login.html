@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>丰登系统 - 登录</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #7dd87d, #56ccf2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-box {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+            width: 400px;
+            text-align: center;
+        }
+        h2 { color: #2e8b57; margin-bottom: 20px; }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        button {
+            background: #2e8b57;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover { background: #246c46; }
+        .msg { color: red; margin-top: 10px; }
+        .success { color: green; }
+        a { text-decoration: none; color: #2e8b57; display: block; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div class="form-box">
+    <h2>丰登系统登录</h2>
+
+    <form action="/login" method="post">
+        <input type="text" name="username" placeholder="用户名" required>
+        <input type="password" name="password" placeholder="密码" required>
+        <button type="submit">登录</button>
+    </form>
+
+    <div class="msg">
+        <p th:text="${error}"></p>
+        <p class="success" th:text="${success}"></p>
+    </div>
+
+    <a href="/register">没有账号？点击注册</a>
+</div>
+</body>
+</html>

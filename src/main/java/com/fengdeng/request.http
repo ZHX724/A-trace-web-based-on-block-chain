@@ -1,0 +1,15 @@
+### 1️ 添加农事操作（上链）
+POST http://localhost:8080/api/trace/add
+Content-Type: application/x-www-form-urlencoded
+
+productId=APPLE-202510
+    &farmer=李强
+    &action=采摘
+    &location=四川雅安
+    &description=采摘红富士苹果
+
+### 2️ 查看整条区块链
+GET http://localhost:8080/api/trace/all
+
+### 3️ 校验链完整性
+GET http://localhost:8080/api/trace/check

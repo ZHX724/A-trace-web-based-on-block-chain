@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>丰登农户上链录入</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: linear-gradient(180deg, #f4fff2, #e2fbe5);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #34a853;
+            color: white;
+            padding: 16px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 { font-size: 20px; margin: 0; }
+        header .user-info { font-size: 15px; }
+        header .user-info a {
+            color: white;
+            text-decoration: none;           /* ✅ 去掉下划线 */
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        header .user-info a:hover {
+            text-decoration: none;           /* ✅ 悬停时也不显示 */
+            color: #d9ffd9;                  /* 可选：鼠标悬停时颜色变亮 */
+        }
+        main {
+            display: flex; flex-direction: column; align-items: center; padding: 50px 20px;
+        }
+        .form-card {
+            background: white; padding: 30px 40px; border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1); width: 450px;
+        }
+        .form-card h2 { text-align: center; color: #2e8b57; margin-bottom: 25px; }
+        input, textarea {
+            width: 100%; padding: 10px; margin: 8px 0; border-radius: 8px; border: 1px solid #ccc; font-size: 15px;
+        }
+        button {
+            width: 100%; background-color: #34a853; color: white; border: none; border-radius: 8px;
+            padding: 12px; font-size: 16px; cursor: pointer; transition: 0.3s;
+        }
+        button:hover { background-color: #2e8b57; }
+        .qrcode { margin-top: 30px; text-align: center; }
+        .qrcode img { margin-top: 15px; border: 2px solid #34a853; border-radius: 10px; }
+        .muted { color: #666; font-size: 14px; }
+        .alert { margin-top: 12px; padding: 10px 12px; border-radius: 8px; }
+        .alert-success { background: #e9f7ef; color: #1e7e34; border: 1px solid #cdebd8; }
+        .alert-error { background: #fdecea; color: #a4262c; border: 1px solid #f5c2c7; }
+        .code-badge {
+            font-family: monospace; padding: 6px 8px; background: #f8f9fa;
+            border: 1px solid #e9ecef; border-radius: 6px;
+        }
+        .copy-btn {
+            margin-left: 10px; padding: 6px 10px; border-radius: 6px; border: none;
+            background: #34a853; color: #fff; cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+<header>
+    <h1>🌾 丰登农户上链系统</h1>
+    <div class="user-info">
+        👨‍🌾 欢迎，
+        <span th:text="${session.user != null ? session.user.username : '未登录'}"></span>
+        ｜ <a href="/api/qrcode/history">查看历史</a>
+        ｜ <a href="/verify">防伪验证</a>
+        ｜ <a href="/index">退出登录</a>
+    </div>
+</header>
+
+<main>
+    <div class="form-card">
+        <h2>📝 农产品溯源信息录入</h2>
+
+        <!-- 表单 -->
+        <form id="uploadForm">
+            <input type="text" id="productId" name="productId" placeholder="产品编号（如：APPLE-20251019）" required />
+            <input type="text" id="farmer" name="farmer"
+                   placeholder="农户姓名"
+                   th:value="${session.user != null ? session.user.username : ''}"
+                   required readonly />
+            <input type="text" id="action" name="action" placeholder="农事操作（如：采摘、运输）" required />
+            <input type="text" id="location" name="location" placeholder="操作地点" required />
+            <textarea id="description" name="description" placeholder="详细描述（如：采摘自福建平和果园）" rows="3" required></textarea>
+            <button type="submit" id="submitBtn">🔗 上链记录</button>
+            <div id="submitMsg" class="muted" style="margin-top:8px;"></div>
+        </form>
+
+        <!-- 结果展示 -->
+        <div class="qrcode" id="qrcodeContainer">
+            <h3>生成的产品追溯二维码与信息</h3>
+            <div id="qrcodeResult"></div>
+        </div>
+
+        <p class="muted" style="margin-top:16px;">
+            提示：提交后系统会自动在链上记录，并生成追溯二维码与防伪码。
+        </p>
+    </div>
+</main>
+
+<script>
+    (function () {
+        const form = document.getElementById("uploadForm");
+        const result = document.getElementById("qrcodeResult");
+        const msg = document.getElementById("submitMsg");
+        const submitBtn = document.getElementById("submitBtn");
+
+        function setLoading(loading) {
+            submitBtn.disabled = loading;
+            submitBtn.textContent = loading ? "提交中..." : "🔗 上链记录";
+        }
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            setLoading(true);
+            msg.className = "muted";
+            msg.textContent = "";
+            result.innerHTML = "";
+
+            try {
+                const formData = new FormData(form);
+
+                // 提交到 /api/trace/add（后端返回 JSON：status/antiFakeCode/traceUrl/qrBase64）
+                const resp = await fetch("/api/trace/add", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const json = await resp.json().catch(() => null);
+
+                if (!resp.ok || !json || json.status !== "success") {
+                    const err = (json && (json.message || json.error)) || "上链失败，请检查输入或查看服务器日志";
+                    throw new Error(err);
+                }
+
+                const productId = json.productId;
+                const antiFake  = json.antiFakeCode || "";
+                const traceUrl  = json.traceUrl;
+                const qrBase64  = (json.qrBase64 || "").startsWith("data:image")
+                    ? json.qrBase64
+                    : ("data:image/png;base64," + (json.qrBase64 || ""));
+
+                // 二维码
+                const img = document.createElement("img");
+                img.src = qrBase64;
+                img.alt = "产品追溯二维码";
+                img.width = 180;
+
+                // 链接
+                const linkP = document.createElement("p");
+                linkP.className = "mt-2";
+                linkP.innerHTML = `跳转链接：<a href="${traceUrl}" target="_blank" rel="noopener noreferrer">${traceUrl}</a>`;
+
+                // 防伪码 + 复制
+                const codeDiv = document.createElement("div");
+                codeDiv.className = "mt-2";
+                codeDiv.innerHTML = `
+        <strong>防伪码：</strong>
+        <span id="antiFakeCodeText" class="code-badge">${antiFake}</span>
+        <button id="copyCodeBtn" class="copy-btn">复制防伪码</button>
+      `;
+
+                result.appendChild(img);
+                result.appendChild(linkP);
+                result.appendChild(codeDiv);
+
+                document.getElementById("copyCodeBtn").addEventListener("click", function () {
+                    const code = document.getElementById("antiFakeCodeText").innerText.trim();
+                    navigator.clipboard.writeText(code)
+                        .then(() => alert("防伪码已复制到剪贴板"))
+                        .catch(() => alert("复制失败，请手动复制：" + code));
+                });
+
+                msg.className = "alert alert-success";
+                msg.textContent = `✅ 上链成功！产品编号：${productId}`;
+
+                // 如需清空表单，取消注释：
+                // form.reset();
+                // document.getElementById("farmer").value = document.querySelector("span[th\\:text]").innerText || ""; // 若需保留登录用户名
+
+            } catch (e) {
+                console.error(e);
+                msg.className = "alert alert-error";
+                msg.textContent = "❌ " + (e.message || "上链失败");
+            } finally {
+                setLoading(false);
+            }
+        });
+    })();
+</script>
+
+</body>
+</html>

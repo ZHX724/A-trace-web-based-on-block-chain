@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>丰登农户上链记录</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: linear-gradient(180deg, #f8fff8, #e6f7eb);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #34a853;
+            color: white;
+            padding: 16px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        header .user-info {
+            font-size: 15px;
+        }
+
+        header .user-info a {
+            color: white;
+            text-decoration: none;       /* ✅ 去掉下划线 */
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        header .user-info a:hover {
+            text-decoration: none;       /* ✅ 悬停时也不显示下划线 */
+            color: #e0ffe0;              /* 可选：悬停时字体略亮 */
+        }
+
+        main {
+            padding: 40px 60px;
+        }
+
+        h2 {
+            color: #2e8b57;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            text-align: center;
+            padding: 12px 8px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        th {
+            background-color: #34a853;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f9f3;
+        }
+
+        .back-btn {
+            margin-top: 25px;
+            display: block;
+            text-align: center;
+            background-color: #34a853;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;       /* ✅ 保证按钮本身也无下划线 */
+            font-weight: bold;
+            width: 150px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #2e8b57;
+            text-decoration: none;       /* ✅ 悬停时保持无下划线 */
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+            font-size: 13px;
+        }
+    </style>
+
+</head>
+<body>
+<header>
+    <h1>🌾 丰登上链历史记录</h1>
+    <div class="user-info">
+        👨‍🌾 <span th:text="${farmer}"></span> ｜
+        <a href="/api/qrcode/add">返回录入</a> ｜
+        <a href="/logout">退出登录</a>
+    </div>
+</header>
+
+<main>
+    <h2>🪶 您的历史上链信息</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>产品编号</th>
+            <th>农事操作</th>
+            <th>地点</th>
+            <th>描述</th>
+            <th>时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tx : ${transactions}">
+            <td th:text="${tx.productId}"></td>
+            <td th:text="${tx.action}"></td>
+            <td th:text="${tx.location}"></td>
+            <td th:text="${tx.description}"></td>
+            <td th:text="${#temporals.format(tx.timestamp, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a class="back-btn" href="/api/qrcode/add">返回上链页面</a>
+</main>
+
+<footer>
+    © 2025 丰登区块链助农系统 | 农户上链记录
+</footer>
+</body>
+</html>
