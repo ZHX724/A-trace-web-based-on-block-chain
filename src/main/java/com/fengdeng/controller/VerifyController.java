@@ -16,13 +16,13 @@ public class VerifyController {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    // ✅ 显示防伪验证页面
+    //显示防伪验证页面
     @GetMapping
     public String showVerifyPage() {
         return "verify";
     }
 
-    // ✅ 验证防伪码逻辑
+    //验证防伪码逻辑
     @PostMapping
     public String verifyCode(@RequestParam String code, Model model) {
         List<TransactionEntity> txs = transactionRepository.findByAntiFakeCode(code);
