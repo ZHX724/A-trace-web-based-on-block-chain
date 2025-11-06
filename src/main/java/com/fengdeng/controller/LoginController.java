@@ -20,7 +20,7 @@ public class LoginController {
      */
     @GetMapping
     public String showLoginPage() {
-        System.out.println("✅ 加载登录页面");
+        System.out.println(" 加载登录页面");
         return "login";
     }
 
@@ -33,7 +33,7 @@ public class LoginController {
                               HttpSession session,
                               Model model) {
 
-        System.out.println("➡️ 登录请求: " + username);
+        System.out.println(" 登录请求: " + username);
 
         UserEntity user = userRepository.findByUsername(username);
 
@@ -44,7 +44,7 @@ public class LoginController {
 
         // 保存登录状态
         session.setAttribute("user", user);
-        System.out.println("✅ 登录成功：" + username);
+        System.out.println(" 登录成功：" + username);
 
         // 登录后跳转录入页面
         return "redirect:/api/qrcode/add";
