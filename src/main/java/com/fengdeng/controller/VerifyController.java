@@ -28,7 +28,7 @@ public class VerifyController {
         List<TransactionEntity> txs = transactionRepository.findByAntiFakeCode(code);
 
         if (txs.isEmpty()) {
-            model.addAttribute("error", "❌ 未找到该防伪码或产品未上链！");
+            model.addAttribute("error", " 未找到该防伪码或产品未上链！");
             return "verify";
         }
 
