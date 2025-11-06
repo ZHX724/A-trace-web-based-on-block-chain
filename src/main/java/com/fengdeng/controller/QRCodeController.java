@@ -78,7 +78,7 @@ public class QRCodeController {
     }
 
     /**
-     * 历史上链记录页面（如你使用）
+     * 历史上链记录页面
      */
     @GetMapping("/history")
     public String showHistoryPage(HttpSession session, Model model) {
