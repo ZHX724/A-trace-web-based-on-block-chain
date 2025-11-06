@@ -20,7 +20,7 @@ public class Block {
         this.hash = calculateHash();
     }
 
-    // ✅ 修复 LocalDateTime 序列化问题
+    // 修复 LocalDateTime 序列化问题
     public String calculateHash() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules(); // 支持 Java 8 时间类型
