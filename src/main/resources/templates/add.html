@@ -22,12 +22,12 @@
         header .user-info { font-size: 15px; }
         header .user-info a {
             color: white;
-            text-decoration: none;           /* ✅ 去掉下划线 */
+            text-decoration: none;           /* 去掉下划线 */
             margin-left: 10px;
             font-weight: bold;
         }
         header .user-info a:hover {
-            text-decoration: none;           /* ✅ 悬停时也不显示 */
+            text-decoration: none;           /* 悬停时也不显示 */
             color: #d9ffd9;                  /* 可选：鼠标悬停时颜色变亮 */
         }
         main {
@@ -179,7 +179,7 @@
                 });
 
                 msg.className = "alert alert-success";
-                msg.textContent = `✅ 上链成功！产品编号：${productId}`;
+                msg.textContent = ` 上链成功！产品编号：${productId}`;
 
                 // 如需清空表单，取消注释：
                 // form.reset();
@@ -188,7 +188,7 @@
             } catch (e) {
                 console.error(e);
                 msg.className = "alert alert-error";
-                msg.textContent = "❌ " + (e.message || "上链失败");
+                msg.textContent = " " + (e.message || "上链失败");
             } finally {
                 setLoading(false);
             }
