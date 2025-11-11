@@ -18,7 +18,7 @@ Web 控制层
 HomeController 渲染首页仪表盘，统计农户数量与上链次数；LoginController/RegisterController 管理用户认证；QRCodeController 负责二维码生成、溯源展示、历史记录页面以及录入表单；BlockchainController 暴露 REST 接口处理上链、链查询与校验；VerifyController 提供防伪码验证流程。
 
 配置与工具
-AuthFilter 是一个 Servlet 过滤器，检查 session 登录状态并为首页、注册、验证等公开路径设置放行逻辑（当前示例尚未补充未登录时的拦截动作）。
+AuthFilter 是一个 Servlet 过滤器，检查 session 登录状态并为首页、注册、验证等公开路径设置放行逻辑。
 
 QRCodeUtil 基于 ZXing 既能生成本地文件二维码，也能返回 Base64 字符串供前端展示。
 
@@ -30,4 +30,4 @@ templates 目录包含全部 Thymeleaf 模板：index.html 的落地页展示统
 其他文件
 BlockchainTest 位于根包中，提供一个简单的 main 方法演示链的创建、添加交易和校验流程，可用于理解区块链模型的运作。
 
-src/main/resources/static 保留静态资源目录（示例中仅含占位文件），可扩展为存放 CSS、JS 或图片。
+src/main/resources/static 保留静态资源目录，可扩展为存放 CSS、JS 或图片。
